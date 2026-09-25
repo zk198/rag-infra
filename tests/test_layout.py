@@ -33,3 +33,29 @@ def test_environment_has_no_default_secret():
 
     assert "replace-with-a-long-random-secret" in env
     assert "replace-me" not in env
+
+
+def test_only_gateway_is_host_exposed_application_service():
+    service_compose = {
+        "rag-ingestion": ROOT.parent / "rag-ingestion" / "docker-compose.yml",
+        "rag-indexer": ROOT.parent / "rag-indexer" / "compose.yaml",
+        "rag-retrieval": ROOT.parent / "rag-retrieval" / "compose.yaml",
+        "rag-gateway": ROOT.parent / "rag-gateway" / "compose.yaml",
+    }
+
+    # These sibling repositories are checked out by the integration CI job.
+    # Keep the test useful for local pytest runs where they may be absent.
+    available = {name: path for name, path in service_compose.items() if path.exists()}
+    if not available:
+        return
+
+    for name in ("rag-ingestion", "rag-indexer", "rag-retrieval"):
+        path = service_compose[name]
+        if path.exists():
+            compose = path.read_text()
+            assert "\n    ports:" not in compose, f"{name} must remain internal"
+
+    gateway = service_compose["rag-gateway"]
+    if gateway.exists():
+        compose = gateway.read_text()
+        assert '      - "8000:8200"' in compose
