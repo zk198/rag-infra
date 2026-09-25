@@ -1,5 +1,5 @@
 include:
-  - ../rag-ingestion/compose.yaml
+  - ../rag-ingestion/docker-compose.yml
   - ../rag-indexer/compose.yaml
   - ../rag-retrieval/compose.yaml
   - ../rag-gateway/compose.yaml
@@ -13,7 +13,7 @@ services:
     ports: []
   rag-gateway:
     ports:
-      - "8000:8000"
+      - "8200:8200"
   qdrant:
     image: qdrant/qdrant:v1.19.1
     ports:
