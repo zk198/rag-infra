@@ -7,15 +7,26 @@ include:
 services:
   pst-agent:
     ports: []
+  rag-indexer:
+    ports: []
   rag-retrieval:
     ports: []
+  rag-gateway:
+    ports:
+      - "8000:8000"
   qdrant:
-    image: qdrant/qdrant:latest
+    image: qdrant/qdrant:v1.19.1
     ports:
       - "6333:6333"
       - "6334:6334"
     volumes:
       - qdrant-data:/qdrant/storage
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:6333/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
 
 volumes:
   qdrant-data:
