@@ -7,12 +7,8 @@ ROOT = Path(__file__).parents[1]
 def test_compose_includes_all_service_repositories():
     compose = (ROOT / "compose.yaml").read_text()
 
-    for repo in (
-        "rag-ingestion",
-        "rag-indexer",
-        "rag-retrieval",
-        "rag-gateway",
-    ):
+    assert "../rag-ingestion/docker-compose.yml" in compose
+    for repo in ("rag-indexer", "rag-retrieval", "rag-gateway"):
         assert f"../{repo}/compose.yaml" in compose
 
 
@@ -31,7 +27,7 @@ def test_only_gateway_is_host_exposed_for_application_traffic():
     assert (
         '  rag-gateway:\n'
         '    ports:\n'
-        '      - "8000:8000"'
+        '      - "8200:8200"'
     ) in compose
     assert "  rag-retrieval:\n    ports: []" in compose
     assert "  pst-agent:\n    ports: []" in compose
