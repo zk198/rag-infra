@@ -4,16 +4,24 @@ Local integration composition for the RAG stack.
 
 The application repositories own their service Compose definitions. This repository uses Compose `include` rather than duplicating those service definitions.
 
-Expected sibling layout:
+## Layout
 
-    rag-infra/
-    rag-ingestion/
-    rag-indexer/
-    rag-retrieval/
-    rag-gateway/
+Check out these repositories as siblings:
 
-Run:
+```
+rag-infra/
+rag-ingestion/
+rag-indexer/
+rag-retrieval/
+rag-gateway/
+```
 
-    docker compose up --build
+Then copy `.env.example` to `.env`, set a real JWT secret, and run:
 
-PostgreSQL is authoritative. Qdrant is a rebuildable search index. Production image pinning and registry publication are intentionally separated into Part 2.
+```
+docker compose up --build
+```
+
+The gateway is exposed on port 8000. PostgreSQL remains the authoritative source of truth and Qdrant is a rebuildable search index.
+
+Qdrant is pinned to v1.19.1 for reproducible local integration. Production image digests and registry-based deployment are handled in Part 2.

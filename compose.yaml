@@ -1,21 +1,23 @@
 include:
-  - ../rag-ingestion/compose.yaml
+  - ../rag-ingestion/docker-compose.yml
   - ../rag-indexer/compose.yaml
   - ../rag-retrieval/compose.yaml
   - ../rag-gateway/compose.yaml
 
 services:
-  pst-agent:
-    ports: []
-  rag-retrieval:
-    ports: []
   qdrant:
-    image: qdrant/qdrant:latest
+    image: qdrant/qdrant:v1.19.1
     ports:
       - "6333:6333"
       - "6334:6334"
     volumes:
       - qdrant-data:/qdrant/storage
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:6333/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
 
 volumes:
   qdrant-data:
