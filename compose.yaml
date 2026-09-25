@@ -1,0 +1,17 @@
+include:
+  - ../rag-ingestion/compose.yaml
+  - ../rag-indexer/compose.yaml
+  - ../rag-retrieval/compose.yaml
+  - ../rag-gateway/compose.yaml
+
+services:
+  qdrant:
+    image: qdrant/qdrant:v1.15.4
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant-data:/qdrant/storage
+
+volumes:
+  qdrant-data:
