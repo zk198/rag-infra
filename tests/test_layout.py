@@ -28,13 +28,13 @@ def test_qdrant_is_version_pinned_and_persistent():
 def test_only_gateway_is_host_exposed_for_application_traffic():
     compose = (ROOT / "compose.yaml").read_text()
 
-    assert '  rag-gateway:
-    ports:
-      - "8000:8000"' in compose
-    assert "  rag-retrieval:
-    ports: []" in compose
-    assert "  pst-agent:
-    ports: []" in compose
+    assert (
+        '  rag-gateway:\n'
+        '    ports:\n'
+        '      - "8000:8000"'
+    ) in compose
+    assert "  rag-retrieval:\n    ports: []" in compose
+    assert "  pst-agent:\n    ports: []" in compose
 
 
 def test_environment_has_no_default_secret():
