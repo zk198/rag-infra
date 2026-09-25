@@ -27,7 +27,7 @@ def test_only_gateway_is_host_exposed_for_application_traffic():
     assert (
         '  rag-gateway:\n'
         '    ports:\n'
-        '      - "8200:8200"'
+        '      - "8000:8200"'
     ) in compose
     assert "  rag-retrieval:\n    ports: []" in compose
     assert "  pst-agent:\n    ports: []" in compose
