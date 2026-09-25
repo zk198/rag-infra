@@ -5,8 +5,12 @@ include:
   - ../rag-gateway/compose.yaml
 
 services:
+  pst-agent:
+    ports: []
+  rag-retrieval:
+    ports: []
   qdrant:
-    image: qdrant/qdrant:v1.15.4
+    image: qdrant/qdrant:latest
     ports:
       - "6333:6333"
       - "6334:6334"
